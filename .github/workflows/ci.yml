@@ -40,15 +40,7 @@ jobs:
       - name: Set up SonarCloud
         uses: SonarSource/sonarcloud-github-action@v1
         with:
-          sonarcloud_token: ${{ secrets.SONAR_TOKEN }}
-        
-      - name: Run SonarCloud analysis
+          entryPoint: "sonar-scanner"
+          args: "-Dsonar.projectKey=MyProject -Dsonar.organization=<your-organization-key> -Dsonar.sources=src/ -Dsonar.host.url=https://sonarcloud.io"
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          sonar-scanner \
-            -Dsonar.projectKey=MyProject \
-            -Dsonar.organization=<your_organization_key> \
-            -Dsonar.sources=src/ \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=$SONAR_TOKEN
