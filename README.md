@@ -1,2 +1,6 @@
 # MyProject
-Test CI/CD pipeline with metrics, static analysis, and review automation.
+<<<<<<< HEAD
+Test CI/CD pipeline with metrics, static analysis, and review automation...
+=======
+Test CI/CD pipeline with metrics, static analysis, and review automation..
+>>>>>>> develop

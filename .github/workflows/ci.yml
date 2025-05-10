@@ -5,15 +5,38 @@ on:
       - main
   pull_request:
     types: [opened, synchronize, reopened]
+
 jobs:
   sonarqube:
     name: SonarQube
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: SonarQube Scan
+          fetch-depth: 0
+
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest-cov
+
+      - name: Run tests with pytest
+        run: pytest  # Без додаткових параметрів --cov і --cov-report, якщо вони є в pytest.ini
+
+      - name: SonarCloud Scan
         uses: SonarSource/sonarqube-scan-action@v5
+        with:
+          organization: dprsnn
+          projectKey: dprsnn_MyProject
+          sonar.host.url: https://sonarcloud.io
+          sonar.junit.reportPaths: coverage-report.xml
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
