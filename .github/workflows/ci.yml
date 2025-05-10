@@ -37,6 +37,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Set up Java 17 (for SonarScanner)
+        run: |
+          sudo apt-get update
+          sudo apt-get install openjdk-17-jdk
+
       - name: Set up SonarCloud
         uses: SonarSource/sonarcloud-github-action@v1
         with:
@@ -44,3 +49,14 @@ jobs:
           args: "-Dsonar.projectKey=MyProject -Dsonar.organization=<your-organization-key> -Dsonar.sources=src/ -Dsonar.host.url=https://sonarcloud.io"
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Run SonarCloud analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          sonar-scanner \
+            -Dsonar.projectKey=MyProject \
+            -Dsonar.organization=<your-organization-key> \
+            -Dsonar.sources=src/ \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=$SONAR_TOKEN
