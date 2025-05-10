@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Set PYTHONPATH
-        run: echo "PYTHONPATH=$(pwd)/src" >> $GITHUB_ENV  # Додає src до PYTHONPATH
+        run: echo "PYTHONPATH=$(pwd)/src" >> $GITHUB_ENV  # Додаємо src до PYTHONPATH
 
       - name: Set up Python
         uses: actions/setup-python@v4
