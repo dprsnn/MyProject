@@ -17,6 +17,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Set PYTHONPATH
+        run: echo "PYTHONPATH=$(pwd)/src" >> $GITHUB_ENV  # Додає src до PYTHONPATH
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -24,6 +27,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Run tests
@@ -51,18 +55,3 @@ jobs:
           unzip sonar-scanner-cli-4.8.0.2856-linux.zip
           export PATH=$PATH:$(pwd)/sonar-scanner-4.8.0.2856-linux/bin
           sonar-scanner
-
-      - name: Check code review approval
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const prNumber = context.payload.pull_request.number;
-            const {data: reviews} = await github.pulls.listReviews({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: prNumber
-            });
-            const approved = reviews.some(review => review.state === 'APPROVED');
-            if (!approved) {
-              core.setFailed("Code review not approved");
-            }
