@@ -40,7 +40,7 @@ jobs:
       - name: Set up Java 17 (for SonarScanner)
         run: |
           sudo apt-get update
-          sudo apt-get install openjdk-17-jdk
+          sudo apt-get install openjdk-17-jdk -y
 
       - name: Set up SonarCloud
         uses: SonarSource/sonarcloud-github-action@v1
