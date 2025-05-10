@@ -15,7 +15,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Ensure full history for relevant analysis
+          fetch-depth: 0
 
       - name: Set up Python 3.x
         uses: actions/setup-python@v2
@@ -26,10 +26,10 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          pip install pytest-cov
 
       - name: Run tests with pytest
-        run: |
-          pytest --cov=src --cov-report=xml:coverage-report.xml
+        run: pytest  # Без додаткових параметрів --cov і --cov-report, якщо вони є в pytest.ini
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarqube-scan-action@v5
@@ -37,6 +37,6 @@ jobs:
           organization: dprsnn
           projectKey: dprsnn_MyProject
           sonar.host.url: https://sonarcloud.io
-          sonar.junit.reportPaths: coverage-report.xml  # Вказуємо шлях до звіту з покриттям
+          sonar.junit.reportPaths: coverage-report.xml
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
